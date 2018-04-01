@@ -69,7 +69,8 @@ public class QueryMain{
     
         SQLQuery sqlquery = p.getSQLQuery();
         int numJoin = sqlquery.getNumJoin();
-    
+        System.out.println(sqlquery.getProjectList());
+        System.out.println(sqlquery.isDistinct());
     
         /** If there are joins then assigns buffers to each join operator
             while preparing the plan
