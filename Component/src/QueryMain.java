@@ -69,7 +69,19 @@ public class QueryMain{
     
         SQLQuery sqlquery = p.getSQLQuery();
         int numJoin = sqlquery.getNumJoin();
-    
+        for (int i=0;i<sqlquery.getProjectList().size();i++){
+            System.out.println(sqlquery.getProjectList().elementAt(i));
+        }
+        for (int i=0;i<sqlquery.getSelectionList().size();i++){
+            System.out.println(sqlquery.getSelectionList().elementAt(i));
+        }
+        for (int i=0;i<sqlquery.getJoinList().size();i++){
+            System.out.println(sqlquery.getJoinList().elementAt(i));
+        }
+        for (int i=0;i<sqlquery.getConditionList().size();i++){
+            System.out.println(sqlquery.getConditionList().elementAt(i));
+        }
+        System.out.println(sqlquery.isDistinct());
     
         /** If there are joins then assigns buffers to each join operator
             while preparing the plan

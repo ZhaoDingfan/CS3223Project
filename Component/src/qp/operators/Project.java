@@ -26,12 +26,13 @@ public class Project extends Operator{
     int[] attrIndex;
 
 
+
     public Project(Operator base, Vector as,int type){
 	super(type);
 	this.base=base;
 	this.attrSet=as;
+	}
 
-    }
 
     public void setBase(Operator base){
 	this.base = base;
@@ -74,6 +75,7 @@ public class Project extends Operator{
 	    //System.out.println("  "+index+"  ");
 	}
 
+
 	if(base.open())
 	    return true;
 	else
@@ -89,27 +91,26 @@ public class Project extends Operator{
 	/** all the tuples in the inbuffer goes to the output
 	    buffer
 	**/
-
 	inbatch = base.next();
 	// System.out.println("Project:-------------- inside the next---------------");
 
+		if(inbatch == null){
+			return null;
+		}
 
-	if(inbatch == null){
-	    return null;
-	}
-	//System.out.println("Project:---------------base tuples---------");
-	for(int i=0;i<inbatch.size();i++){
-	    Tuple basetuple = inbatch.elementAt(i);
-	    //Debug.PPrint(basetuple);
-	    //System.out.println();
-	    Vector present = new Vector();
-	    for(int j=0;j<attrSet.size();j++){
-		Object data = basetuple.dataAt(attrIndex[j]);
-		present.add(data);
-	    }
-	    Tuple outtuple = new Tuple(present);
-	    outbatch.add(outtuple);
-	}
+		//System.out.println("Project:---------------base tuples---------");
+		for(int i=0;i<inbatch.size();i++){
+	    	Tuple basetuple = inbatch.elementAt(i);
+	    	//Debug.PPrint(basetuple);
+	    	//System.out.println();
+	    	Vector present = new Vector();
+	    	for(int j=0;j<attrSet.size();j++){
+			Object data = basetuple.dataAt(attrIndex[j]);
+			present.add(data);
+	    	}
+	    	Tuple outtuple = new Tuple(present);
+			outbatch.add(outtuple);
+		}
 	return outbatch;
     }
 
@@ -129,8 +130,9 @@ public class Project extends Operator{
     public Object clone(){
 	Operator newbase = (Operator) base.clone();
 	Vector newattr = new Vector();
-	for(int i=0;i<attrSet.size();i++)
-	    newattr.add((Attribute) ((Attribute)attrSet.elementAt(i)).clone());
+	for(int i=0;i<attrSet.size();i++) {
+		newattr.add((Attribute) ((Attribute)attrSet.elementAt(i)).clone());
+	}
 	Project newproj = new Project(newbase,newattr,optype);
 	Schema newSchema = newbase.getSchema().subSchema(newattr);
 	newproj.setSchema(newSchema);
