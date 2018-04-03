@@ -76,8 +76,7 @@ public class SQLQuery {
     public boolean isDistinct() {
         return isDistinct;
     }
-    
-    
+
     public Vector getProjectList() {
         return projectList;
     }

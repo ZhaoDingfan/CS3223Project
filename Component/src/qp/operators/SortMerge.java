@@ -1,9 +1,7 @@
 package qp.operators;
 
-import com.sun.media.jfxmedia.logging.Logger;
 import qp.utils.*;
 
-import javax.lang.model.type.ArrayType;
 import java.io.*;
 import java.util.*;
 

@@ -24,11 +24,13 @@ public class RandomInitialPlan {
     Vector joinlist;          //List of join conditions
     Vector groupbylist;
     int numJoin;    // Number of joins in this query
-    
+    boolean isDinstinct;
+    int numBuffer;
     
     Hashtable tab_op_hash;          //table name to the Operator
     Operator root; // root of the query plan tree
-    
+
+
     
     public RandomInitialPlan(SQLQuery sqlquery) {
         this.sqlquery = sqlquery;
@@ -39,7 +41,8 @@ public class RandomInitialPlan {
         joinlist = sqlquery.getJoinList();
         groupbylist = sqlquery.getGroupByList();
         numJoin = joinlist.size();
-        
+        isDinstinct=sqlquery.isDistinct();
+        numBuffer=BufferManager.getNumBuffer();
         
     }
     
@@ -62,6 +65,7 @@ public class RandomInitialPlan {
             createJoinOp();
         }
         createProjectOp();
+        createDistinctOp();
         return root;
     }
     
@@ -201,6 +205,15 @@ public class RandomInitialPlan {
         if (!projectlist.isEmpty()) {
             root = new Project(base, projectlist, OpType.PROJECT);
             Schema newSchema = base.getSchema().subSchema(projectlist);
+            root.setSchema(newSchema);
+        }
+    }
+
+    public void createDistinctOp(){
+        Operator base=root;
+        if (isDinstinct){
+            root=new Distinct(base,numBuffer,OpType.DISTINCT);
+            Schema newSchema =base.getSchema();
             root.setSchema(newSchema);
         }
     }
