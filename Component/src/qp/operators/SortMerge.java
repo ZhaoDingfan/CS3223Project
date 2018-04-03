@@ -47,7 +47,11 @@ public class SortMerge extends Operator {
             
             // Phase 2: Merge sorted runs
             mergeSortedFiles();
-    
+            op.close();
+            System.out.println("Until this place, the code works properly. ");
+            if(in == null)
+                System.out.println("input stream null");
+            
             
             return true;
         }
@@ -59,13 +63,11 @@ public class SortMerge extends Operator {
         }
         Batch batch = new Batch(tupleSize);
         try {
-            if(in == null) {
+            if(in == null)
                 in = new ObjectInputStream(new FileInputStream(sortedFiles.get(0)));
-            }
+
             batch = (Batch) in.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException|ClassNotFoundException e) {
             e.printStackTrace();
         }
         if(batch.isEmpty()) {
@@ -78,9 +80,11 @@ public class SortMerge extends Operator {
         sortedFiles.get(0).delete();
         try {
             in.close();
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
+//        op.close();
         return true;
     }
     
@@ -223,16 +227,17 @@ public class SortMerge extends Operator {
                             inputBatches.remove(i);
 //                            System.out.println(inputBatches.size());
                             inputBatches.add(i, currBatch);
-//                            System.out.println(inputBatches.size());
-//                            if (currBatch == null) {
-//                                indicator[i] = false;
-//                                break;
-//                            }
-                        } catch (IOException e) {
+                            
+                        } catch (EOFException e) {
                             System.out.println("Reading input streams error " + i);
+                            try {
+                                inputStreams.get(i).close();
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
                             indicator[i] = false;
 //                            break;
-                        } catch (ClassNotFoundException e) {
+                        } catch (IOException|ClassNotFoundException e) {
                             System.out.println("Class not found. ");
                         }
                     }
@@ -269,6 +274,15 @@ public class SortMerge extends Operator {
                     flag = true;
                 }
             }
+        }
+    
+        try {
+            ObjectOutputStream out = new AppendableObjectOutputStream(new FileOutputStream(resultFile));
+            out.writeObject(outputBuffer);
+            System.out.println(outputBuffer.size());
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         
         for(int i = 0;i < size;i++) {
