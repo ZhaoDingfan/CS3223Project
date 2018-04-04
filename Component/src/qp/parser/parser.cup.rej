@@ -1,0 +1,10 @@
+diff a/Component/src/qp/parser/parser.cup b/Component/src/qp/parser/parser.cup	(rejected hunks)
+@@ -97,7 +97,7 @@
+                  parser.query=sq;
+                 RESULT=sq;
+                 :}
+-             | SELECT attlist:a FROM tablelist:t
++             | SELECT DISTINCT attlist:a FROM tablelist:t
+                 {:
+                  Vector v1= new Vector();
+                 SQLQuery sq = new SQLQuery(a,t);
