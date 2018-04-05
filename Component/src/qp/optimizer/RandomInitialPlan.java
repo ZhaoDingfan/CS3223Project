@@ -59,7 +59,7 @@ public class RandomInitialPlan {
         if (numJoin != 0) {
             createJoinOp();
         }
-        createSortMergeOp();
+    //    createSortMergeOp();
         createProjectOp();
         return root;
     }
@@ -203,22 +203,22 @@ public class RandomInitialPlan {
         }
     }
 
-    public void createSortMergeOp() {
-        Operator base = root;
-        if(groupbylist == null)
-            groupbylist = new Vector();
-        if (!groupbylist.isEmpty()) {
-            root = new GroupBy(base, groupbylist, OpType.GROUP_BY);
-            // Continue to use the schema of projection
-            Schema newSchema = base.getSchema();
-            root.setSchema(newSchema);
-        }
-        if(isDistinct) {
-            root = new Distinct(base, projectlist, OpType.DISTINCT);
-            Schema newSchema = base.getSchema();
-            root.setSchema(newSchema);
-        }
-    }
+//    public void createSortMergeOp() {
+//        Operator base = root;
+//        if(groupbylist == null)
+//            groupbylist = new Vector();
+//        if (!groupbylist.isEmpty()) {
+//            root = new GroupBy(base, groupbylist, OpType.GROUP_BY);
+//            // Continue to use the schema of projection
+//            Schema newSchema = base.getSchema();
+//            root.setSchema(newSchema);
+//        }
+//        if(isDistinct) {
+//            root = new Distinct(base, projectlist, OpType.DISTINCT);
+//            Schema newSchema = base.getSchema();
+//            root.setSchema(newSchema);
+//        }
+//    }
 
     private void modifyHashtable(Operator old, Operator newop) {
         Enumeration e = tab_op_hash.keys();

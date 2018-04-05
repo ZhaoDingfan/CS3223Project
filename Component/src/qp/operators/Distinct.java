@@ -15,7 +15,7 @@ public class Distinct extends SortMerge{
     Tuple lastTuple;
     int start;       // Cursor position in the input buffer
 
-    public Distinct(Operator base, Vector as, int type) {
+    public Distinct(Operator base, Vector as, int type,int numbuff) {
         super(base, as, type);
     }
 
