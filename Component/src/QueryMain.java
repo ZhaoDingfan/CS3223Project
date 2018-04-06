@@ -61,7 +61,7 @@ public class QueryMain{
         try{
             p.parse();
         }catch(Exception e){
-            System.out.println("Exception occured while parsing");
+            System.out.println("Exception occurred while parsing");
             System.exit(1);
         }
     

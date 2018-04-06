@@ -185,13 +185,13 @@ public class PlanCost {
                 break;
             case JoinType.BLOCKNESTED:
                 //TODO: BUG
-                //joincost = 0;
-                joincost = calculateBNLJCost(leftpages, rightpages, numbuff);
+                joincost = 1;
+//                joincost = calculateBNLJCost(leftpages, rightpages, numbuff);
                 break;
             case JoinType.SORTMERGE:
                 //TODO: BUG
-                //joincost = 0;
-                joincost = calculateSMJCost(leftpages, rightpages, numbuff);
+                joincost = 0;
+//                joincost = calculateSMJCost(leftpages, rightpages, numbuff);
                 break;
             case JoinType.HASHJOIN:
                 //TODO: BUG
