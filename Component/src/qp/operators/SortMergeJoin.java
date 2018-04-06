@@ -52,7 +52,7 @@ public class SortMergeJoin extends Join {
 
     @Override
     public boolean open() {
-        System.out.println("SortMergeJoin:-----------------in open--------------");
+//        System.out.println("SortMergeJoin:-----------------in open--------------");
         Debug.PPrint(schema);
         // select number of tuples per batch and number of batches per block
         int tuplesize = schema.getTupleSize();
@@ -75,14 +75,14 @@ public class SortMergeJoin extends Join {
         int rightTupleSize = right.getSchema().getTupleSize();
         rightBatchSize = Batch.getPageSize() / rightTupleSize;
 
-        System.out.print("left attr: ");
-        Debug.PPrint(leftattr);
-
-        System.out.print(" right attr: ");
-        Debug.PPrint(rightattr);
-
-        System.out.println();
-        System.out.println("index: " + leftindex + " " + rightindex);
+//        System.out.print("left attr: ");
+//        Debug.PPrint(leftattr);
+//
+//        System.out.print(" right attr: ");
+//        Debug.PPrint(rightattr);
+//
+//        System.out.println();
+//        System.out.println("index: " + leftindex + " " + rightindex);
 //        System.out.println("=====left schema====");
 //        Debug.PPrint(left.getSchema());
 //
@@ -160,17 +160,17 @@ public class SortMergeJoin extends Join {
 
         //Store the first group of tuples from right operation with same merge attribute into the block
         rightbatch = sortedRight.next();
-        System.out.println("========LOADING right batch 1=======");
+//        System.out.println("========LOADING right batch 1=======");
         for (int j = 0; j < rightbatch.size(); j++) {
             Tuple present = rightbatch.elementAt(j);
             System.out.print("tuple: ");
-            for(int i=0; i<present._data.size(); i++) {
-                System.out.print(present.dataAt(i) + " ");
-            }
-            System.out.println();
+//            for(int i=0; i<present._data.size(); i++) {
+//                System.out.print(present.dataAt(i) + " ");
+//            }
+//            System.out.println();
         }
-        System.out.println("=======done right batch=======");
-        System.out.println();
+//        System.out.println("=======done right batch=======");
+//        System.out.println();
         refTuple = rightbatch.elementAt(0);
         while(rightbatch != null) {
             rightTuple = rightbatch.elementAt(rcurs);
@@ -192,17 +192,17 @@ public class SortMergeJoin extends Join {
                         eos = true;
                         break;
                     }
-                    System.out.println("========LOADING right batch 2=======");
+//                    System.out.println("========LOADING right batch 2=======");
                     for (int j = 0; j < rightbatch.size(); j++) {
                         Tuple present = rightbatch.elementAt(j);
-                        System.out.print("tuple: ");
-                        for(int i=0; i<present._data.size(); i++) {
-                            System.out.print(present.dataAt(i) + " ");
-                        }
-                        System.out.println();
+//                        System.out.print("tuple: ");
+//                        for(int i=0; i<present._data.size(); i++) {
+//                            System.out.print(present.dataAt(i) + " ");
+//                        }
+//                        System.out.println();
                     }
-                    System.out.println("=======done right batch=======");
-                    System.out.println();
+//                    System.out.println("=======done right batch=======");
+//                    System.out.println();
                 }
             } else {
                 break;
@@ -254,7 +254,7 @@ public class SortMergeJoin extends Join {
                                 }
                             }
                         } else if (diff == 0) {
-                            System.out.println("size: " + tempcurs + " " + tempBlock.size());
+//                            System.out.println("size: " + tempcurs + " " + tempBlock.size());
                             while (tempcurs < tempBlock.size()) {
                                 outbatch.add(leftTuple.joinWith((Tuple) tempBlock.get(tempcurs)));
                                 tempcurs++;
@@ -291,11 +291,11 @@ public class SortMergeJoin extends Join {
 
 
             leftTuple = leftbatch.elementAt(lcurs);
-            System.out.print("tuple at "+ lcurs + ": ");
-            for(int i=0; i<leftTuple._data.size(); i++) {
-                System.out.print(leftTuple.dataAt(i) + " ");
-            }
-            System.out.println();
+//            System.out.print("tuple at "+ lcurs + ": ");
+//            for(int i=0; i<leftTuple._data.size(); i++) {
+//                System.out.print(leftTuple.dataAt(i) + " ");
+//            }
+//            System.out.println();
 //            System.out.print("left tuple: ");
 //            for(int i=0; i<refTuple._data.size(); i++) {
 //                System.out.print(refTuple.dataAt(i) + " ");
