@@ -71,7 +71,6 @@ public class PlanCost {
         if (node.getOpType() == OpType.JOIN) {
             return getStatistics((Join) node);
         } else if (node.getOpType() == OpType.SELECT) {
-            //System.out.println("PlanCost: line 40");
             return getStatistics((Select) node);
         } else if (node.getOpType() == OpType.PROJECT) {
             return getStatistics((Project) node);
@@ -99,6 +98,12 @@ public class PlanCost {
      **/
 
     protected int getStatistics(Distinct node) {
+        int tuples=calculateCost(node.getBase());
+        Schema schema=node.getSchema();
+        int bufferSize=BufferManager.getBuffers();
+        int passes=1+(int) Math.ceil(Math.log( Math.ceil( (double) tuples/ (double) bufferSize))/Math.log( (double) bufferSize-1.0));
+        int result=passes*2*tuples;
+        cost=cost+result;
         return calculateCost(node.getBase());
     }
 
@@ -107,6 +112,12 @@ public class PlanCost {
      **/
 
     protected int getStatistics(GroupBy node) {
+        int tuples=calculateCost(node.getBase());
+        Schema schema=node.getSchema();
+        int bufferSize=BufferManager.getBuffers();
+        int passes=1+(int) Math.ceil(Math.log( Math.ceil( (double) tuples/ (double) bufferSize))/Math.log( (double) bufferSize-1.0));
+        int result=passes*2*tuples;
+        cost=cost+result;
         return calculateCost(node.getBase());
     }
 
@@ -185,13 +196,12 @@ public class PlanCost {
                 break;
             case JoinType.BLOCKNESTED:
                 //TODO: BUG
-                joincost = 1;
-//                joincost = calculateBNLJCost(leftpages, rightpages, numbuff);
+               // joincost = Integer.MAX_VALUE-600000;
+                joincost = calculateBNLJCost(leftpages, rightpages, numbuff);
                 break;
             case JoinType.SORTMERGE:
                 //TODO: BUG
-                joincost = 0;
-//                joincost = calculateSMJCost(leftpages, rightpages, numbuff);
+                joincost = calculateSMJCost(leftpages, rightpages, numbuff);
                 break;
             case JoinType.HASHJOIN:
                 //TODO: BUG
@@ -205,18 +215,6 @@ public class PlanCost {
                 joincost = 0;
                 break;
         }
-//        System.out.print("Join type: " + node.getJoinType() + "  Condition: ");
-//        Debug.PPrint(node.getCondition());
-//        System.out.println();
-//        System.out.println("in_left, right: " + lefttuples + " " + righttuples);
-//        System.out.print("leftSchema (tuplesize: " + leftuplesize + "): ");
-//        Debug.PPrint(leftschema);
-//        System.out.print("rightSchema (tuplesize: " + righttuplesize + "): ");
-//        Debug.PPrint(rightschema);
-//        System.out.println("capacity_left, right: " + leftcapacity + " " + rightcapacity);
-//        System.out.println("leftpage, rightpages, buff: " + leftpages + " " + rightpages + " " + numbuff);
-//        System.out.println("in_dist_left, right: " + leftattrdistn + " " + rightattrdistn);
-//        System.out.println("joincost: " + joincost + " - outtuples: " + outtuples + " - distinct: " + mindistinct);
         cost = cost + joincost;
         return outtuples;
     }
