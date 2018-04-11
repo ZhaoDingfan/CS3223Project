@@ -190,21 +190,17 @@ public class PlanCost {
 
         switch (joinType) {
             case JoinType.NESTEDJOIN:
-                //TODO: BUG
                 //joincost = leftpages * rightpages;
                 joincost = calculateNLJCost(leftpages, rightpages);
                 break;
             case JoinType.BLOCKNESTED:
-                //TODO: BUG
                // joincost = Integer.MAX_VALUE-600000;
                 joincost = calculateBNLJCost(leftpages, rightpages, numbuff);
                 break;
             case JoinType.SORTMERGE:
-                //TODO: BUG
                 joincost = calculateSMJCost(leftpages, rightpages, numbuff);
                 break;
             case JoinType.HASHJOIN:
-                //TODO: BUG
                 joincost = calculateHashJoinCost(leftpages, rightpages);
                 break;
             case JoinType.INDEXNESTED:

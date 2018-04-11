@@ -6,6 +6,7 @@
 package qp.operators;
 
 import qp.utils.Batch;
+import qp.utils.Condition;
 import qp.utils.Tuple;
 
 import java.util.Vector;
@@ -73,5 +74,13 @@ public class Distinct extends SortMerge{
                 start = i;
         }
         return outbatch;
+    }
+
+    public Object clone() {
+        Operator newbase = (Operator) base.clone();
+        Vector newAttr = (Vector) attrSet.clone();
+        Distinct newDistinct = new Distinct(newbase, newAttr, optype);
+        newDistinct.setSchema(newbase.getSchema());
+        return newDistinct;
     }
 }

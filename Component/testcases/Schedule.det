@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 2
 8
 flno INTEGER 10001 PK 4
+=======
+2
+8
+flno INTEGER 10001 PK 4
+>>>>>>> c098f461b14af85adf4c2dc402d7659f5c107add
 aid INTEGER  15000 NK 4
